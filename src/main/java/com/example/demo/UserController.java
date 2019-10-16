@@ -22,21 +22,26 @@ import org.springframework.web.util.UriComponentsBuilder;
 @RestController
 @RequestMapping(value={"/user"})
 public class UserController {
+	
     @Autowired
     UserService userService;
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<User> getUserById(@PathVariable("id") long id) {
+    	
         System.out.println("Fetching User with id " + id);
         User user = userService.findById(id);
         if (user == null) {
             return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
         }
+        
         return new ResponseEntity<User>(user, HttpStatus.OK);
+        
     }
 
     @PostMapping(value="/create",headers="Accept=application/json")
     public ResponseEntity<Void> createUser(@RequestBody User user, UriComponentsBuilder ucBuilder){
+    	
         System.out.println("Creating User "+user.getName());
         userService.createUser(user);
         HttpHeaders headers = new HttpHeaders();
