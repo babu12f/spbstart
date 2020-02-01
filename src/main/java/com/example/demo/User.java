@@ -1,52 +1,74 @@
 package com.example.demo;
 
+import javax.jws.soap.SOAPBinding;
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import java.util.List;
+
 @Entity
-@Table(name="UserInfo")
+@Table(name="users")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class User {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
-    private long id;
-
-    @Column(name="country")
-    private String country;
-    
-    @Column(name="name")
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @Column(name = "user_id")
+    private Integer id;
     private String name;
-    
-    @OneToOne(fetch = FetchType.LAZY,
-            cascade =  CascadeType.ALL,
-            mappedBy = "user")
-    private UserProfile userProfile;
+    private Integer salary;
+    private String teamName;
 
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
+    private List<UserLog> userLogs;
 
-    public long getId() {
+    public User() {
+    }
+
+    public List<UserLog> getUserLogs() {
+        return userLogs;
+    }
+
+    public User setUserLogs(List<UserLog> userLogs) {
+        this.userLogs = userLogs;
+        return this;
+    }
+
+    public Integer getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public User setId(Integer id) {
         this.id = id;
+        return this;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public User setName(String name) {
         this.name = name;
+        return this;
     }
 
-    public String getCountry() {
-        return country;
+    public Integer getSalary() {
+        return salary;
     }
 
-    public void setCountry(String country) {
-        this.country = country;
+    public User setSalary(Integer salary) {
+        this.salary = salary;
+        return this;
     }
 
+    public String getTeamName() {
+        return teamName;
+    }
+
+    public User setTeamName(String teamName) {
+        this.teamName = teamName;
+        return this;
+    }
 }
